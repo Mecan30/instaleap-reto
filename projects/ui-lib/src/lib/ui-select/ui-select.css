@@ -1,0 +1,33 @@
+
+.ui-select {
+  @apply flex flex-col gap-1.5 w-full;
+}
+
+.ui-select__label {
+  @apply text-xs font-semibold uppercase tracking-wider text-slate-300;
+}
+
+.ui-select__control-wrapper {
+  @apply relative w-full;
+}
+
+.ui-select__field {
+  @apply w-full rounded-lg border border-slate-700 bg-slate-900 px-3.5 py-2.5 text-sm text-slate-100
+    transition-colors duration-150 outline-none cursor-pointer
+    hover:border-lime-400/60
+    focus:border-lime-400 focus:ring-2 focus:ring-lime-400/30
+    disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-slate-700;
+}
+
+.ui-select__skeleton {
+  @apply flex items-center gap-2.5 w-full rounded-lg border border-slate-800 bg-slate-900/80
+    px-3.5 py-2.5 text-sm text-slate-400 animate-pulse cursor-wait;
+}
+
+.ui-select__spinner {
+  @apply h-4 w-4 rounded-full border-2 border-lime-400/30 border-t-lime-400 animate-spin;
+}
+
+.ui-select__skeleton-text {
+  @apply text-sm text-slate-400;
+}
