@@ -1,0 +1,33 @@
+
+<main class="min-h-screen bg-slate-950 text-slate-100">
+  <!-- Resplandor ambiental inspirado en el universo de Rick & Morty -->
+  <div class="pointer-events-none fixed inset-0 overflow-hidden">
+    <div class="absolute -left-40 -top-40 h-96 w-96 rounded-full bg-lime-500/10 blur-3xl"></div>
+    <div class="absolute -right-40 top-1/3 h-96 w-96 rounded-full bg-cyan-500/10 blur-3xl"></div>
+  </div>
+
+  <div class="relative mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:px-12">
+    <header class="border-b border-slate-800 pb-6">
+      <div
+        class="mb-3 inline-flex items-center gap-2 rounded-full border border-lime-400/30 bg-lime-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-lime-300"
+      >
+        <span class="h-2 w-2 rounded-full bg-lime-400"></span>
+        Rick &amp; Morty API Explorer
+      </div>
+
+      <h1 class="text-3xl font-black tracking-tight sm:text-4xl">
+        {{ title() }}
+      </h1>
+
+      <p class="mt-2 max-w-2xl text-sm text-slate-400">
+        Base limpia de la aplicación consumidora de <code class="text-lime-400">ui-lib</code>.
+      </p>
+    </header>
+
+    <section class="mt-8 rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
+      <p class="text-sm text-slate-300">
+        Área preparada para integrar los componentes de <code class="text-cyan-400">ui-lib</code> y el flujo de recursos.
+      </p>
+    </section>
+  </div>
+</main>
