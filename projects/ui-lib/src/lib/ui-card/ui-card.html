@@ -1,0 +1,25 @@
+
+<article
+  class="ui-card"
+  [class.ui-card--flat]="elevation() === 'flat'"
+  [class.ui-card--raised]="elevation() === 'raised'"
+  [class.ui-card--outlined]="elevation() === 'outlined'"
+>
+  <button
+    type="button"
+    class="ui-card__header"
+    (click)="onHeaderClick()"
+  >
+    <h3 class="ui-card__title">{{ title() }}</h3>
+
+    @if (subtitle()) {
+      <p class="ui-card__subtitle">{{ subtitle() }}</p>
+    }
+  </button>
+
+  <div class="ui-card__body">
+    <ng-content />
+  </div>
+</article>
+
+  
