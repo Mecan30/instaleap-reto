@@ -33,7 +33,7 @@ export class UiCard {
   readonly subtitle = input<string | null>(null);
 
   /** 
-   * Estilo visual del contenedor ('flat', 'raised' o 'outlined').
+   * Estilo visual del contenedor (flat, raised o outlined).
    */
   readonly elevation = input<CardElevation>('outlined');
 
@@ -43,7 +43,7 @@ export class UiCard {
   readonly headerClicked = output<void>();
   
   /**
-   * Maneja el clic sobre el encabezado de la tarjeta y emite `headerClicked`.
+   * Maneja el clic sobre el encabezado de la tarjeta y emite (headerClicked).
    */
   protected onHeaderClick(): void {
     this.headerClicked.emit();

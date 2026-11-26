@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 
 /**
- * Representa una posible opción dentro de <ui-select>.
+ * Representa una posible opción dentro de (<ui-select>).
  */
 export interface SelectOption {
   /**
@@ -67,12 +67,12 @@ export class UiSelect {
   readonly value = model<string | null>(null);
 
   /**
-   * Emite el objeto `SelectOption` completo cuando cambia la selección.
+   * Emite el objeto (SelectOption) completo cuando cambia la selección.
    */
   readonly selectionChange = output<SelectOption>();
 
   /**
-   * Identificador único para asociar <label> y <select>.
+   * Identificador único para asociar (<label>) y (<select>).
    */
   protected readonly selectElementId = this.controlId;
 
@@ -84,7 +84,7 @@ export class UiSelect {
   );
 
   /**
-   * Maneja el cambio de opción en el elemento nativo <select>,
+   * Maneja el cambio de opción en el elemento nativo (<select>),
    * actualiza el modelo (value) y emite el objeto (SelectOption) correspondiente.
    */
   onSelectionChange(event: Event): void {

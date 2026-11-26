@@ -16,6 +16,9 @@ export type ButtonVariant = 'primary' | 'secondary' | 'danger';
  */
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
+/**
+ * Componente del botón reutilizable.
+ */
 @Component({
   selector: 'ui-button',
   standalone: true,
