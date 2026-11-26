@@ -1,0 +1,82 @@
+
+<div class="ui-table-wrapper">
+  <table class="ui-table">
+    <thead class="ui-table__head">
+      <tr>
+        @for (column of columns(); track column.key) {
+          <th scope="col" class="ui-table__th">
+            {{ column.header }}
+          </th>
+        }
+        <th scope="col" class="ui-table__th ui-table__th--actions">
+          Acciones
+        </th>
+      </tr>
+    </thead>
+
+    <tbody class="ui-table__body">
+      @if (loading()) {
+        @for (skeleton of skeletonRows; track skeleton) {
+          <tr class="ui-table__tr">
+            @for (column of columns(); track column.key) {
+              <td class="ui-table__td">
+                <div class="ui-table__skeleton-bar"></div>
+              </td>
+            }
+            <td class="ui-table__td ui-table__td--actions">
+              <div class="ui-table__skeleton-actions">
+                <div class="ui-table__skeleton-pill"></div>
+                <div class="ui-table__skeleton-pill"></div>
+              </div>
+            </td>
+          </tr>
+        }
+      } @else if (hasError()) {
+        <tr>
+          <td [attr.colspan]="columns().length + 1" class="ui-table__state-cell">
+            <div class="ui-table__error" role="alert">
+              <p class="ui-table__error-title">Error al cargar los datos</p>
+              <p class="ui-table__error-message">{{ errorMessage() }}</p>
+            </div>
+          </td>
+        </tr>
+      } @else if (isEmpty()) {
+        <tr>
+          <td [attr.colspan]="columns().length + 1" class="ui-table__state-cell">
+            <div class="ui-table__empty" role="status">
+              <p class="ui-table__empty-message">{{ emptyMessage() }}</p>
+            </div>
+          </td>
+        </tr>
+      } @else {
+        @for (row of rows(); track $index) {
+          <tr class="ui-table__tr">
+            @for (column of columns(); track column.key) {
+              <td class="ui-table__td">
+                {{ getCellValue(row, column.key) }}
+              </td>
+            }
+            <td class="ui-table__td ui-table__td--actions">
+              <div class="ui-table__actions">
+                <button
+                  type="button"
+                  class="ui-table__btn ui-table__btn--view"
+                  (click)="onView(row)"
+                >
+                  Ver detalle
+                </button>
+                <button
+                  type="button"
+                  class="ui-table__btn ui-table__btn--delete"
+                  (click)="onDelete(row)"
+                >
+                  Eliminar
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+</div>

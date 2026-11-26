@@ -1,0 +1,91 @@
+
+.ui-table-wrapper {
+  @apply w-full overflow-x-auto rounded-xl border border-slate-800 bg-slate-900/80 shadow-lg;
+}
+
+.ui-table {
+  @apply w-full border-collapse text-left text-sm text-slate-200;
+}
+
+.ui-table__head {
+  @apply border-b border-slate-800 bg-slate-950/80;
+}
+
+.ui-table__th {
+  @apply px-4 py-3 text-xs font-semibold uppercase tracking-wider text-lime-300 whitespace-nowrap;
+}
+
+.ui-table__th--actions {
+  @apply text-right;
+}
+
+.ui-table__body {
+  @apply divide-y divide-slate-800/80;
+}
+
+.ui-table__tr {
+  @apply transition-colors duration-150 hover:bg-slate-800/50;
+}
+
+.ui-table__td {
+  @apply px-4 py-3 text-sm text-slate-200 align-middle;
+}
+
+.ui-table__td--actions {
+  @apply text-right whitespace-nowrap;
+}
+
+.ui-table__actions {
+  @apply inline-flex items-center justify-end gap-2;
+}
+
+.ui-table__btn {
+  @apply rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors duration-150
+    outline-none cursor-pointer focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900;
+}
+
+.ui-table__btn--view {
+  @apply border border-cyan-500/40 bg-cyan-500/10 text-cyan-300
+    hover:bg-cyan-500/20 hover:border-cyan-400 focus:ring-cyan-400;
+}
+
+.ui-table__btn--delete {
+  @apply border border-rose-500/40 bg-rose-500/10 text-rose-300
+    hover:bg-rose-500/20 hover:border-rose-400 focus:ring-rose-400;
+}
+
+.ui-table__skeleton-bar {
+  @apply h-4 w-28 rounded bg-slate-800 animate-pulse;
+}
+
+.ui-table__skeleton-actions {
+  @apply inline-flex items-center justify-end gap-2;
+}
+
+.ui-table__skeleton-pill {
+  @apply h-7 w-16 rounded-lg bg-slate-800 animate-pulse;
+}
+
+.ui-table__state-cell {
+  @apply px-6 py-10 text-center;
+}
+
+.ui-table__error {
+  @apply mx-auto max-w-md rounded-lg border border-rose-500/40 bg-rose-950/30 p-4 text-center;
+}
+
+.ui-table__error-title {
+  @apply text-sm font-semibold text-rose-300;
+}
+
+.ui-table__error-message {
+  @apply mt-1 text-xs text-rose-200/90;
+}
+
+.ui-table__empty {
+  @apply mx-auto max-w-md rounded-lg border border-slate-800 bg-slate-950/60 p-4 text-center;
+}
+
+.ui-table__empty-message {
+  @apply text-sm text-slate-400;
+}
