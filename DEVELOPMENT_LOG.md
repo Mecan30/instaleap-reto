@@ -83,3 +83,13 @@ Se generó la aplicación (demo-app) dentro de (projects/demo-app) con prefijo (
 - Solicitud: limpiar el código de prueba de (demo-app) y dejar una base ordenada con temática de Rick & Morty.
 - Qué se aceptó y por qué: la estructura base limpia en (app.ts) y (app.html) con (OnPush) y signals, manteniendo el enfoque modular y sin lógica de prueba residual.
 - Qué se modificó o rechazó: se retiró el bloque de prueba de interacción para no mezclar demostraciones temporales con el flujo principal del reto.
+
+# 6. Verificación visual de (<ui-button>) en (demo-app)
+
+Se importó (UiButton) en (demo-app) desde el paquete público (ui-lib) y se montó una pantalla de prueba visual para inspeccionar variantes, tamaños, estados y la emisión del evento (clicked) mediante una señal de prueba (lastAction).
+
+# Uso de IA
+- Solicitud: orientación para conectar (UiButton) en (demo-app) y agregar casos de prueba visuales incluyendo un botón activo que respondiera al click.
+- Qué se aceptó y por qué: importar el componente desde (ui-lib), usar una señal local para verificar en pantalla cuándo se dispara (clicked) y contrastar botones bloqueados (`disabled` / `loading`) frente a uno habilitado.
+- Qué se modificó o rechazó: se mantuvo la prueba acotada a la verificación visual de `<ui-button>` sin adelantar todavía la integración de la API de Rick & Morty ni volver atrás a la base vacía antes de terminar de comprobar los estados.
+

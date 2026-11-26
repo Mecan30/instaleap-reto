@@ -26,8 +26,54 @@ input()	 |   disabled   |	boolean                       |	Bloquea la interacció
 input()	 |   loading    |	boolean                       |	Muestra spinner y bloquea el clic (por defecto false)
 output() |   clicked    |	void                          |	Emite solo si no está disabled ni loading
 
+# Ejemplo de uso en HTML
+
+<ui-button
+  label="Explorar"
+  variant="primary"
+  size="md"
+  [disabled]="false"
+  [loading]="false"
+  (clicked)="onAction()"
+/>
+
 # Decisiones de diseño iniciales
 
 - Tailwind CSS v3 (3.4.17): se fijó la versión 3 para cumplir los requisitos del reto y mantener una paleta oscura con acentos verdes y cian acorde a la temática.
 - API pública centralizada: se exportan los componentes desde (public-api.ts) para mantener el desacoplamiento entre (ui-lib) y (demo-app).
+
+# Verificación en (demo-app)
+
+La aplicación (demo-app) consume `<ui-button>` directamente desde (ui-lib) y expone una vista de prueba para validar:
+- Variantes visuales (primary, secondary, danger).
+- Tamaños (sm, md, lg).
+- Bloqueo de interacción en estados (disabled) y (loading - con indicador de carga), frente a botones habilitados que emiten (clicked).
+
+# Ejemplo de uso en HTML
+
+<ui-button
+    label="Primary" 
+    variant="primary"
+    (clicked)="onButtonClick('Primary')"
+/>
+
+<ui-button
+    label="Pequeño (sm)"
+    size="sm"
+    (clicked)="onButtonClick('Pequeño sm')"
+/>
+
+<ui-button
+    label="Cargando..."
+    [loading]="true"
+    (clicked)="onButtonClick('Tampoco debería salir')"
+/>
+
+<ui-button
+    label="Activo"
+    variant="primary"
+    [disabled]="false"
+    [loading]="false"
+    (clicked)="onButtonClick('Activo (sí responde)')"
+/>
 
