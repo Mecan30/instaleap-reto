@@ -1,0 +1,77 @@
+
+/* Estilos base del botón mediante utilidades Tailwind. */
+.ui-button {
+  @apply inline-flex items-center justify-center gap-2;
+  @apply rounded-lg border border-transparent;
+  @apply font-semibold cursor-pointer;
+  @apply transition-colors duration-200;
+
+  font-family: inherit;
+}
+
+/* Variante principal. */
+.ui-button--primary {
+  @apply bg-lime-500 text-slate-950;
+}
+
+.ui-button--primary:hover:not(:disabled) {
+  @apply bg-lime-400;
+}
+
+/* Variante secundaria. */
+.ui-button--secondary {
+  @apply bg-slate-200 text-slate-900;
+}
+
+.ui-button--secondary:hover:not(:disabled) {
+  @apply bg-slate-300;
+}
+
+/* Variante de peligro. */
+.ui-button--danger {
+  @apply bg-red-600 text-white;
+}
+
+.ui-button--danger:hover:not(:disabled) {
+  @apply bg-red-500;
+}
+
+/* Tamaños disponibles. */
+.ui-button--sm {
+  @apply min-h-8 px-3 py-1.5 text-xs;
+}
+
+.ui-button--md {
+  @apply min-h-10 px-4 py-2 text-sm;
+}
+
+.ui-button--lg {
+  @apply min-h-12 px-6 py-3 text-base;
+}
+
+/* Estado deshabilitado. */
+.ui-button:disabled {
+  @apply cursor-not-allowed opacity-60;
+}
+
+/* Indicador visual del foco. */
+.ui-button:focus-visible {
+  @apply outline outline-2 outline-offset-2 outline-lime-300;
+}
+
+/* Indicador de carga. */
+.ui-button__spinner {
+  @apply h-4 w-4 rounded-full border-2;
+  @apply border-current border-r-transparent animate-spin;
+}
+
+/* Respeta la preferencia de movimiento reducido. */
+@media (prefers-reduced-motion: reduce) {
+  .ui-button {
+    @apply transition-none;
+  }
+
+  .ui-button__spinner {
+    @apply animate-none;
+  }
+}
