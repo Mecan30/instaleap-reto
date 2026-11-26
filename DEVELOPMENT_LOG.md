@@ -53,7 +53,7 @@ Solución: se corrigió el selector a (ui-button) y se estableció como convenci
 - Dificultad: representar las variantes y tamaños sin duplicar componentes.
   Solución: se utilizaron clases CSS dinámicas según los valores de los inputs.
 
-# Uso de inteligencia artificial
+# Uso de IA
 
 Solicitudes realizadas:
 - Orientación para definir la API del componente.
@@ -90,6 +90,20 @@ Se importó (UiButton) en (demo-app) desde el paquete público (ui-lib) y se mon
 
 # Uso de IA
 - Solicitud: orientación para conectar (UiButton) en (demo-app) y agregar casos de prueba visuales incluyendo un botón activo que respondiera al click.
-- Qué se aceptó y por qué: importar el componente desde (ui-lib), usar una señal local para verificar en pantalla cuándo se dispara (clicked) y contrastar botones bloqueados (`disabled` / `loading`) frente a uno habilitado.
-- Qué se modificó o rechazó: se mantuvo la prueba acotada a la verificación visual de `<ui-button>` sin adelantar todavía la integración de la API de Rick & Morty ni volver atrás a la base vacía antes de terminar de comprobar los estados.
+- Qué se aceptó y por qué: importar el componente desde (ui-lib), usar una señal local para verificar en pantalla cuándo se dispara (clicked) y contrastar botones bloqueados (disabled - loading) frente a uno habilitado.
+- Qué se modificó o rechazó: se mantuvo la prueba acotada a la verificación visual de (<ui-button>) sin adelantar todavía la integración de la API de Rick & Morty ni volver atrás a la base vacía antes de terminar de comprobar los estados.
+
+# 7. Componente (<ui-card>)
+
+# Uso de IA
+
+- El prompt utilizado: solicitudd para definir y estructurar (ui-card.html) y (ui-card.css) con Tailwind CSS (@apply)
+- Qué se aceptó y por qué: Usar (elevation) con valor por defecto (outlined) y variantes (flat, raised, outlined) para dar consistencia visual reutilizable.
+- Qué se rechazó o modificó: Se eliminó el computed (elevationClasses) en (ui-card.ts) tras verificar que el control de variantes ya se resolvía mediante clases en (ui-card.html) y (@apply) en (ui-card.css), evitando duplicar lógica entre TypeScript y la plantilla/estilos.
+
+# Retos y Soluciones
+
+- Advertencia de lint por (UiCard) no usada en (App): Al importar (UiCard) en (demo-app) antes de renderizar (<ui-card>) en (app.html) y luego por caché del language server, apareció una advertencia. Se resolvió añadiendo (<ui-card>) en (app.html) y reiniciando los servicios de Angular/TypeScript en VS Code.
+
+- Aviso de (Unknown at rule @apply): Se verificó que (ng build ui-lib) compilaba sin errores y que el aviso correspondía al análisis estático de CSS/editor frente a directivas de Tailwind CSS.
 

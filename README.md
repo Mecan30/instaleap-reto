@@ -16,12 +16,12 @@ Desde la terminal (Se empleó GitBash) ejecutar los siguiente comandos
 2. Compilar la librería: ng build ui-lib
 3. Ejecutar la aplicación demo: ng serve demo-app
 
-# API de componentes (avance actual)
+# API del componente (ui-button)
 
 Tipo     |   Nombre     |               Tipo TS           |           Descripción
 input()	 |   label      |	string (requerido)            | Texto visible del botón
 input()	 |   variant    |	'primary'-'secondary'-'danger'|	Estilo visual del botón (por defecto 'primary')
-input()	 |   size       |	'sm' | 'md' | 'lg'            |	Tamaño del botón (por defecto 'md')
+input()	 |   size       |	'sm'-'md'-'lg'                |	Tamaño del botón (por defecto 'md')
 input()	 |   disabled   |	boolean                       |	Bloquea la interacción (por defecto false)
 input()	 |   loading    |	boolean                       |	Muestra spinner y bloquea el clic (por defecto false)
 output() |   clicked    |	void                          |	Emite solo si no está disabled ni loading
@@ -76,4 +76,27 @@ La aplicación (demo-app) consume `<ui-button>` directamente desde (ui-lib) y ex
     [loading]="false"
     (clicked)="onButtonClick('Activo (sí responde)')"
 />
+
+# API del componente actual (ui-card)
+
+    Tipo     |      Nombre       |          Tipo TS            |           Descripción
+input()	     |   title           |	string                     | Titulo del header de la card
+input()	     |   subtitle        |	string - null              | Subtitulo opcional debajo del titulo
+input()	     |   elevation       |	'flat'-'raised'-'outlined' | Estilo visual del contenedor
+output()	 |   headerclicked   |	void                       | Emite al hacer click en el header
+ng-content	 |         -         |	             -             | Proyecta contenido arbitrario en el body
+
+
+# Ejemplos de uso en HTML
+
+<ui-card
+    title="Rick Sanchez"
+    subtitle="Human · Alive"
+    elevation="raised"
+    (headerClicked)="onButtonClick('Header: Rick Sanchez (raised)')"
+>
+    <p class="text-sm text-slate-300">
+        Elevación <strong class="text-slate-100">raised</strong>. Clic aquí no debe disparar headerClicked.
+    </p>
+</ui-card>
 
