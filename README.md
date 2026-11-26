@@ -6,6 +6,7 @@ Workspace de Angular con una librería de componentes reutilizables (ui-lib) y u
 # Arquitectura del proyecto
 
 - projects/ui-lib: librería de componentes standalone con (ChangeDetectionStrategy.OnPush) y Angular Signals API (input(), output(), model()), expuestos públicamente desde (projects/ui-lib/src/public-api.ts).
+
 - projects/demo-app: aplicación consumidora de (ui-lib) (sin importaciones internas directas), donde se construirá el flujo de exploración de recursos de la Rick and Morty API.
 
 # Instalación y ejecución
@@ -40,11 +41,13 @@ output() |   clicked    |	void                          |	Emite solo si no está
 # Decisiones de diseño iniciales
 
 - Tailwind CSS v3 (3.4.17): se fijó la versión 3 para cumplir los requisitos del reto y mantener una paleta oscura con acentos verdes y cian acorde a la temática.
+
 - API pública centralizada: se exportan los componentes desde (public-api.ts) para mantener el desacoplamiento entre (ui-lib) y (demo-app).
 
 # Verificación en (demo-app)
 
-La aplicación (demo-app) consume `<ui-button>` directamente desde (ui-lib) y expone una vista de prueba para validar:
+La aplicación (demo-app) consume (<ui-button>) directamente desde (ui-lib) y expone una vista de prueba para validar:
+
 - Variantes visuales (primary, secondary, danger).
 - Tamaños (sm, md, lg).
 - Bloqueo de interacción en estados (disabled) y (loading - con indicador de carga), frente a botones habilitados que emiten (clicked).
@@ -77,7 +80,7 @@ La aplicación (demo-app) consume `<ui-button>` directamente desde (ui-lib) y ex
     (clicked)="onButtonClick('Activo (sí responde)')"
 />
 
-# API del componente actual (ui-card)
+# API del componente (ui-card)
 
     Tipo     |      Nombre       |          Tipo TS            |           Descripción
 input()	     |   title           |	string                     | Titulo del header de la card
@@ -99,4 +102,27 @@ ng-content	 |         -         |	             -             | Proyecta contenid
         Elevación <strong class="text-slate-100">raised</strong>. Clic aquí no debe disparar headerClicked.
     </p>
 </ui-card>
+
+# API del componente actual (ui-select)
+
+    Tipo     |        Nombre       |          Tipo TS       |           Descripción
+input()	     |   options           |	SelectOption[]      | Lista de opciones { label, value}
+input()	     |   label             |	string              | Etiqueta visible sobre el select
+input()	     |   placeholder       |	string              | Texto cuando no hay selección
+input()	     |   loading           |	boolean             | Estado de carga (skeleton o spinner)
+input()	     |   disable           |	boolean             | Bloquea la interacción
+model()	     |   value             |	string - null       | Two-way binding del valor seleccionado
+output()	 |   selectionChange   |	SelectOption        | Emite el objeto completo al cambiar
+
+# Ejemplos de uso en HTML
+
+<ui-select
+  label="Recurso"
+  placeholder="Elige un recurso"
+  [options]="resourceOptions"
+  [loading]="isLoading()"
+  [disabled]="isDisabled()"
+  [(value)]="selectedResource"
+  (selectionChange)="onResourceChange($event)"
+/>
 
