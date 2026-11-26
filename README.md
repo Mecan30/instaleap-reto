@@ -167,3 +167,9 @@ output()	 |   actionTriggered   |	TableAction         | Emite { action: 'view'-'
     ng test ui-lib --watch=false
     ng test demo-app --watch=false
 
+# Despliegue en GitHub Pages
+
+- Aplicación en vivo (demo-app): Disponible en [https://mecan30.github.io/instaleap-reto/]
+
+- Automatización con GitHub Actions: Cada (push) a la rama (main) ejecuta el workflow en (.github/workflows/deploy.yml), compilando primero (ui-lib) (npx ng build ui-lib) y luego (demo-app) con (--base-href /instaleap-reto/) antes de publicar el artefacto resultante (dist/demo-app/browser) en GitHub Pages.
+

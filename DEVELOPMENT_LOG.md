@@ -214,3 +214,25 @@ Se importó (UiButton) en (demo-app) desde el paquete público (ui-lib) y se mon
 
 - Limpieza de caracteres de copia/lectura en specs: Al revisar los archivos de prueba se cuidó que las aserciones y spies (`vi.spyOn`) quedaran sin errores tipográficos para ejecutar (ng test --watch=false) sin fallos.
 
+# 12. Despliegue Automatizado de (demo-app) en GitHub Pages
+
+# Decisiones tomadas
+
+- Publicación vía GitHub Actions en GitHub Pages: Se cambió la visibilidad del repositorio a público y se configuró (Settings -> Pages) con origen (GitHub Actions) para automatizar la compilación y publicación en cada (push) a (main) sin depender de plataformas externas.
+
+- Compilación secuencial de librería y aplicación con (--base-href): El workflow compila primero (ui-lib) para generar su salida actualizada y luego construye (demo-app) pasando (--base-href /instaleap-reto/) para que las rutas y recursos estáticos resuelvan correctamente bajo la subruta del repositorio en GitHub Pages.
+
+# Uso de IA
+
+# Configuración del workflow de GitHub Actions (.github/workflows/deploy.yml)
+   
+- El prompt utilizado: Solicitud para configurar el despliegue de (demo-app) en GitHub Pages usando GitHub Actions.
+
+- Qué se aceptó y por qué: Se adoptó la estructura con (actions/checkout), (actions/setup-node), compilación previa de (ui-lib), build de (demo-app) con (--base-href /instaleap-reto/) y subida del artefacto (dist/demo-app/browser) mediante (actions/upload-pages-artifact) y (actions/deploy-pages), ya que se adapta a la arquitectura multi-proyecto del workspace de Angular.
+
+- Qué se rechazó o modificó: Se descartó usar los workflows sugeridos por defecto en la interfaz de GitHub Pages (Jekyll o Static HTML), dado que el workspace requiere compilación de Angular y la librería interna antes del despliegue.
+
+# Retos y Soluciones
+
+- Ubicación inicial del archivo de workflow: Al crear (deploy.yml) inicialmente quedó en (.github/deploy.yml) en lugar de dentro de (.github/workflows/), lo que impidió referenciar (.github/workflows/deploy.yml) al preparar el commit. Mover el archivo a (.github/workflows/deploy.yml) permitió registrarlo, hacer el commit y ejecutar el workflow en verde en GitHub Actions.
+
