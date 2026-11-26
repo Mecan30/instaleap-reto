@@ -139,3 +139,19 @@ Se importó (UiButton) en (demo-app) desde el paquete público (ui-lib) y se mon
 
 - Errores de compilación en plantilla (statusOptions, selectedStatus, onStatusChange): Al incorporar los dos selectores de prueba (recurso y filtro de estado) en (app.html) antes de declarar sus señales y manejadores en (app.ts), Angular reportó propiedades inexistentes en (App). Se resolvió definiendo (statusOptions), (selectedStatus) y (onStatusChange) en (app.ts).
 
+# 9. Componente (<ui-table>)
+
+# Uso de IA
+
+- El prompt utilizado: Solicitud para implementar el cuarto componente (<ui-table>) de forma genérica (<T>), aplicando estilos con (@apply) de Tailwind CSS v3, exportando sus tipos públicos e integrando una prueba visual interactiva en (demo-app).
+
+- Qué se aceptó y por qué: Manejo exclusivo de tres estados visuales mutuamente excluyentes mediante signals computados (loading con skeleton rows, hasError y isEmpty) y delegación total de las acciones (view) y (delete) mediante (actionTriggered). Método tipado ( getCellValue(row: T, key: string) ) capaz de resolver valores primitivos, nulos y objetos anidados con propiedad (name) sin romper el tipado estricto.
+
+- Qué se rechazó o modificó: Se aclaró que la interfaz (DemoRow) pertenece únicamente al laboratorio temporal en (demo-app/src/app/app.ts) y no debe exportarse desde (public-api.ts) de (ui-lib), evitando acoplar la librería a modelos de prueba.
+
+# Retos y Soluciones
+
+- Orden entre compilación de librería y consumo en (demo-app): Al agregar el apartado de (<ui-table>) en (app.html) y (app.ts), se verificó la necesidad de ejecutar (ng build ui-lib) antes de compilar (demo-app) para actualizar los tipos y artefactos en (dist/ui-lib).
+
+- Ubicación del tipado de filas de prueba (DemoRow): Se definió (interface DemoRow) dentro de (projects/demo-app/src/app/app.ts) justo antes del decorador (@Component), manteniendo limpia la frontera entre la librería genérica y la aplicación consumidora.
+

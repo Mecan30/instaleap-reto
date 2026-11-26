@@ -103,7 +103,7 @@ ng-content	 |         -         |	             -             | Proyecta contenid
     </p>
 </ui-card>
 
-# API del componente actual (ui-select)
+# API del componente (ui-select)
 
     Tipo     |        Nombre       |          Tipo TS       |           Descripción
 input()	     |   options           |	SelectOption[]      | Lista de opciones { label, value}
@@ -124,5 +124,24 @@ output()	 |   selectionChange   |	SelectOption        | Emite el objeto completo
   [disabled]="isDisabled()"
   [(value)]="selectedResource"
   (selectionChange)="onResourceChange($event)"
+/>
+
+# API del componente actual (ui-table)
+
+    Tipo     |        Nombre       |          Tipo TS       |           Descripción
+input()	     |   columns           |	TableColumn[]       | Definición de columnas { key, header}
+input()	     |   rows              |	T[] (Genérico)      | Datos a renderizar
+input()	     |   loading           |	boolean             | Muestra skeleton rows en lugar de datos
+input()	     |   empetyMessage     |	string              | Mensaje cuando row está vacío
+input()	     |   errorMessage      |	string - null       | Mensaje de error de red visible en la tabla
+output()	 |   actionTriggered   |	TableAction         | Emite { action: 'view'-'delete', row: T }
+
+<ui-table
+  [columns]="tableColumns"
+  [rows]="tableRows()"
+  [loading]="isLoading()"
+  [errorMessage]="errorMessage()"
+  emptyMessage="No se encontraron resultados."
+  (actionTriggered)="onTableAction($event)"
 />
 
