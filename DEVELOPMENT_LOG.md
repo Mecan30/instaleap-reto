@@ -190,3 +190,27 @@ Se importó (UiButton) en (demo-app) desde el paquete público (ui-lib) y se mon
 
 - Confusión inicial sobre imágenes en (Episodes - Locations) y rapidez del skeleton: Se aclaró que la API de Rick and Morty solo provee (image) en personajes y que el skeleton pasa rápido por la baja latencia de respuesta; se mantuvieron las fichas adaptativas por tipo de recurso y se validó el estado de carga en el flujo reactivo.
 
+# 11. Pruebas Unitarias con Vitest (ui-lib) y (demo-app)
+
+# Decisiones tomadas
+
+- Cobertura funcional de los componentes de (ui-lib) y (App): Se mantuvieron y verificaron las pruebas de (UiButton) (variantes, tamaños, disabled, loading, spinner y emisión de clicked) y se ampliaron las pruebas de (UiCard) (título, subtítulo y proyección vía ng-content), (UiSelect) (etiqueta, opciones, disabled y selectionChange), (UiTable) (columnas, filas, estados vacío/error y actionTriggered) junto con la prueba del encabezado actual en (App).
+
+- Aislamiento de red en pruebas de (App): Se registraron (provideHttpClient()) y (provideHttpClientTesting()) en el (TestBed) de (App) para probar el componente sin depender de llamadas reales a la API externa durante la ejecución de tests.
+
+# Uso de IA
+
+# Ampliación de specs con Vitest y (TestBed) (UiCard, UiSelect, UiTable y App)
+   
+- El prompt utilizado: Solicitud para adaptar y ampliar las pruebas unitarias de los componentes de la librería y de la aplicación demo usando Vitest.
+
+- Qué se aceptó y por qué: Se aceptó el enfoque de (TestBed) con (vi.spyOn) y la verificación de estados visibles/eventos emitidos, porque valida el comportamiento real de los componentes y pasa en verde en (ui-lib) y (demo-app).
+
+- Qué se rechazó o modificó: Se descartó dejar (UiCard) únicamente con la prueba inicial de creación y se ajustó la aserción antigua de (App) (que buscaba 'Hello, demo-app') para alinearla con el título real del (Resource Explorer).
+
+# Retos y Soluciones
+
+- Pruebas incompletas en componentes y aserción desactualizada en (App): (UiCard), (UiSelect) y (UiTable) contaban solo con la prueba base de creación, y (App) conservaba un texto inicial distinto al actual. Se completaron las specs por componente y se actualizó (app.spec.ts) con proveedores HTTP de prueba, logrando 24 pruebas en verde en (ui-lib) y 2 en (demo-app).
+
+- Limpieza de caracteres de copia/lectura en specs: Al revisar los archivos de prueba se cuidó que las aserciones y spies (`vi.spyOn`) quedaran sin errores tipográficos para ejecutar (ng test --watch=false) sin fallos.
+

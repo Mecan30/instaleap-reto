@@ -159,3 +159,11 @@ output()	 |   actionTriggered   |	TableAction         | Emite { action: 'view'-'
 
 - Atmósfera visual inspirada en Rick & Morty (Tailwind CSS v3): Se diseñó una paleta oscura espacial (#070b14 / #0b1322) con acentos verde portal (#97ce4c) y cian dimensional (cyan-400), tipografía monoespaciada para identificadores y códigos, y una bitácora en vivo de eventos emitidos por los componentes.
 
+# Pruebas unitarias con Vitest
+
+- Ejecución de suites (ui-lib) y (demo-app): El proyecto ejecuta pruebas unitarias con Vitest (ng test) y (TestBed) sobre (ui-lib) (UiButton, UiCard, UiSelect, UiTable) y (demo-app) (App), cubriendo renderizado, inputs/outputs, estados (disabled, loading, vacío, error), proyección de contenido con (ng-content) e integración inicial con (HttpClient) de prueba.
+
+- Comandos útiles:
+    ng test ui-lib --watch=false
+    ng test demo-app --watch=false
+
