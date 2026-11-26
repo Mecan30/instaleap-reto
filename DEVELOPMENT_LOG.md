@@ -155,3 +155,38 @@ Se importó (UiButton) en (demo-app) desde el paquete público (ui-lib) y se mon
 
 - Ubicación del tipado de filas de prueba (DemoRow): Se definió (interface DemoRow) dentro de (projects/demo-app/src/app/app.ts) justo antes del decorador (@Component), manteniendo limpia la frontera entre la librería genérica y la aplicación consumidora.
 
+# 10. Explorer de Recursos en (demo-app) e Integración con (ui-lib)
+
+# Decisiones tomadas
+
+- Desacoplamiento entre (ui-lib) y (demo-app): Se mantuvieron los cuatro componentes de (ui-lib) agnósticos del dominio y de peticiones HTTP; el consumo de Rick and Morty API, columnas por recurso y estado del explorador se centralizaron en (RickAndMortyExplorerService) dentro de (demo-app).
+
+- Estado reactivo con Angular Signals y (OnPush): Se usaron (signal() y computed()) en el servicio junto con (ChangeDetectionStrategy.OnPush) en (App) para gestionar recurso activo, filtro de (status) solo habilitado en (characters) y reiniciado al cambiar de recurso, carga, error, detalle y confirmación de borrado.
+
+- Confirmación previa al eliminar y temática Rick & Morty: Se incorporó un modal de confirmación con (<ui-card>) y (<ui-button>) antes de eliminar un elemento de la lista visible, y se aplicó una estética oscura con acentos verde portal (#97ce4c) y cian en Tailwind CSS v3, junto con JSDoc en los métodos públicos del servicio y handlers del componente.
+
+# Uso de IA
+
+# Integración del Explorer de Recursos
+# RickAndMortyExplorerService, rick-and-morty.models.ts, app.ts y app.html
+
+- El prompt utilizado: Solicitud para crear los modelos tipados de Rick and Morty API, configurar       ( HttpClient() ) y conectar lo componentes de (ui-lib) en la aplicación demo.
+
+- Qué se aceptó y por qué: Se aceptó la separación en modelos estrictos, servicio con Signals y proyección de contenido con (ng-content) en (<ui-card>), porque mantiene tipado fuerte sin (any), evita lógica de red dentro de la vista y reutiliza la librería tal como fue diseñada.
+
+- Qué se rechazó o modificó: Se modificó la versión inicial del botón de cerrar del modal porque proyectaba texto interno sin pasar el (input) requerido (label="Cerrar"), y se ajustó el manejo de la acción (delete) para exigir confirmación previa del usuario en vez de limitarse a registrar texto en la bitácora.
+
+# Ajustes visuales, confirmación de borrado y auditoría de JSDoc
+
+- El prompt utilizado: Consultas sobre la ausencia de imágenes en episodios/ubicaciones, el comportamiento rápido del skeleton loading, la estética inspirada en Rick & Morty, el flujo de confirmación al eliminar y la revisión de JSDoc en métodos públicos.
+
+- Qué se aceptó y por qué: Se incorporó la paleta y atmósfera de Rick & Morty en Tailwind CSS v3, el flujo de confirmación (pendingDeleteItem, requestDelete, confirmDelete, cancelDelete) y los bloques JSDoc en (RickAndMortyExplorerService) y (App), ya que mejoran la UX, cumplen los criterios de feedback y documentan la API pública.
+
+- Qué se rechazó o modificó: No se añadió retardo artificial a las peticiones HTTP para forzar el skeleton loading.
+
+# Retos y Soluciones
+
+- Aviso del Language Server sobre (TableColumn) (ngtypecheck): El editor mostraba marcas de error sobre propiedades de (TableColumn) en (ui-table.html) pese a que (ng build ui-lib) y (ng build demo-app) compilaban sin fallos. Se identificó como caché del servidor de lenguaje y se superó reiniciando el Angular Language Service / TS Server y verificando la compilación real.
+
+- Confusión inicial sobre imágenes en (Episodes - Locations) y rapidez del skeleton: Se aclaró que la API de Rick and Morty solo provee (image) en personajes y que el skeleton pasa rápido por la baja latencia de respuesta; se mantuvieron las fichas adaptativas por tipo de recurso y se validó el estado de carga en el flujo reactivo.
+

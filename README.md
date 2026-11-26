@@ -19,13 +19,13 @@ Desde la terminal (Se empleó GitBash) ejecutar los siguiente comandos
 
 # API del componente (ui-button)
 
-Tipo     |   Nombre     |               Tipo TS           |           Descripción
-input()	 |   label      |	string (requerido)            | Texto visible del botón
-input()	 |   variant    |	'primary'-'secondary'-'danger'|	Estilo visual del botón (por defecto 'primary')
-input()	 |   size       |	'sm'-'md'-'lg'                |	Tamaño del botón (por defecto 'md')
-input()	 |   disabled   |	boolean                       |	Bloquea la interacción (por defecto false)
-input()	 |   loading    |	boolean                       |	Muestra spinner y bloquea el clic (por defecto false)
-output() |   clicked    |	void                          |	Emite solo si no está disabled ni loading
+Tipo     |  Nombre  |        Tipo TS                |           Descripción
+input()	 | label    | string (requerido)            | Texto visible del botón
+input()	 | variant  | 'primary'-'secondary'-'danger'| Estilo visual del botón (por defecto 'primary')
+input()	 | size     | 'sm'-'md'-'lg'                | Tamaño del botón (por defecto 'md')
+input()	 | disabled | boolean                       | Bloquea la interacción (por defecto false)
+input()	 | loading  | boolean                       | Muestra spinner y bloquea el click (default: false)
+output() | clicked  | void                          | Emite solo si no está disabled ni loading
 
 # Ejemplo de uso en HTML
 
@@ -126,7 +126,7 @@ output()	 |   selectionChange   |	SelectOption        | Emite el objeto completo
   (selectionChange)="onResourceChange($event)"
 />
 
-# API del componente actual (ui-table)
+# API del componente (ui-table)
 
     Tipo     |        Nombre       |          Tipo TS       |           Descripción
 input()	     |   columns           |	TableColumn[]       | Definición de columnas { key, header}
@@ -144,4 +144,18 @@ output()	 |   actionTriggered   |	TableAction         | Emite { action: 'view'-'
   emptyMessage="No se encontraron resultados."
   (actionTriggered)="onTableAction($event)"
 />
+
+# Integración del Explorer de Recursos y UX en (demo-app)
+
+- Desacoplamiento entre librería UI y dominio de negocio: Los componentes de (ui-lib) se mantuvieron agnósticos de la API de Rick and Morty. Toda la lógica de consumo HTTP, transformación de columnas y estado de la aplicación vive en (demo-app) (RickAndMortyExplorerService).
+
+- Gestión de estado reactiva con Angular Signals: En (RickAndMortyExplorerService) se centralizó el estado mediante ( signal() y computed() ) (selectedResource, selectedStatus, items, loading, errorMessage, selectedItem, pendingDeleteItem, activeColumns, isStatusFilterEnabled), junto con (ChangeDetectionStrategy.OnPush) en (App), evitando suscripciones manuales en la vista y manteniendo actualizaciones predecibles.
+
+- Tipado estricto sin (any) (rick-and-morty.models.ts): Se modelaron interfaces genéricas (ApiPaginatedResponse<T>), uniones literales (ResourceType, CharacterStatus) y type guards (isCharacter, isEpisode, isLocation) para garantizar seguridad de tipos en tiempo de compilación al alternar entre personajes, episodios y ubicaciones.
+
+- Filtro dependiente del contexto: El selector de estado (Alive, Dead, unknown) se habilita únicamente cuando el recurso activo es (Characters) y se reinicia automáticamente al cambiar de recurso, evitando peticiones inválidas en (Episodes) y (Locations).
+
+- Proyección de contenido (ng-content) y confirmación destructiva: Se reutilizó (<ui-card>) tanto para el modal de detalle adaptativo por tipo de recurso como para un modal de confirmación previo a eliminar un registro (pendingDeleteItem), cumpliendo el flujo de feedback explícito al usuario mediante (<ui-button>).
+
+- Atmósfera visual inspirada en Rick & Morty (Tailwind CSS v3): Se diseñó una paleta oscura espacial (#070b14 / #0b1322) con acentos verde portal (#97ce4c) y cian dimensional (cyan-400), tipografía monoespaciada para identificadores y códigos, y una bitácora en vivo de eventos emitidos por los componentes.
 
