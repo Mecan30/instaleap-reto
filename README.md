@@ -1,59 +1,33 @@
-# InstaleapReto
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.3.0.
+# UI Component Library — Angular + TypeScript (instaleap-reto)
 
-## Development server
+Workspace de Angular con una librería de componentes reutilizables (ui-lib) y una aplicación demo (demo-app) inspirada en el universo de Rick & Morty, construida con Angular, TypeScript estricto (strict: true) y Tailwind CSS v3.
 
-To start a local development server, run:
+# Arquitectura del proyecto
 
-```bash
-ng serve
-```
+- projects/ui-lib: librería de componentes standalone con (ChangeDetectionStrategy.OnPush) y Angular Signals API (input(), output(), model()), expuestos públicamente desde (projects/ui-lib/src/public-api.ts).
+- projects/demo-app: aplicación consumidora de (ui-lib) (sin importaciones internas directas), donde se construirá el flujo de exploración de recursos de la Rick and Morty API.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+# Instalación y ejecución
 
-## Code scaffolding
+Desde la terminal (Se empleó GitBash) ejecutar los siguiente comandos
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+1. Instalar dependencias: npm install
+2. Compilar la librería: ng build ui-lib
+3. Ejecutar la aplicación demo: ng serve demo-app
 
-```bash
-ng generate component component-name
-```
+# API de componentes (avance actual)
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Tipo     |   Nombre     |               Tipo TS           |           Descripción
+input()	 |   label      |	string (requerido)            | Texto visible del botón
+input()	 |   variant    |	'primary'-'secondary'-'danger'|	Estilo visual del botón (por defecto 'primary')
+input()	 |   size       |	'sm' | 'md' | 'lg'            |	Tamaño del botón (por defecto 'md')
+input()	 |   disabled   |	boolean                       |	Bloquea la interacción (por defecto false)
+input()	 |   loading    |	boolean                       |	Muestra spinner y bloquea el clic (por defecto false)
+output() |   clicked    |	void                          |	Emite solo si no está disabled ni loading
 
-```bash
-ng generate --help
-```
+# Decisiones de diseño iniciales
 
-## Building
+- Tailwind CSS v3 (3.4.17): se fijó la versión 3 para cumplir los requisitos del reto y mantener una paleta oscura con acentos verdes y cian acorde a la temática.
+- API pública centralizada: se exportan los componentes desde (public-api.ts) para mantener el desacoplamiento entre (ui-lib) y (demo-app).
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

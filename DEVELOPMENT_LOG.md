@@ -1,0 +1,85 @@
+
+# Registro de desarrollo - Instaleap UI Components
+
+Este documento registra las decisiones técnicas, dificultades, soluciones, validaciones y utilización de herramientas de inteligencia artificial durante el desarrollo de la prueba técnica.
+
+# 1. Configuración inicial del workspace
+
+# Creación del workspace
+
+Se creó un workspace de Angular cumpliendo el propósito de organizar por separado la biblioteca de componentes y la aplicación de demostración.
+
+# Configuración de TypeScript estricto
+
+Durante la revisión de la configuración se identificó que el modo estricto de TypeScript no estaba activado explícitamente.
+
+Solución: se agregó ("strict": true) en el archivo raíz (tsconfig.json), para aplicar las comprobaciones estrictas de TypeScript a los proyectos que heredan esta configuración.
+
+# Uso de IA
+- Solicitud: ayuda para revisar la configuración de TypeScript y comprobar si cumplía el requisito de modo estricto.
+- Aporte recibido: explicación de cómo inspeccionar la configuración efectiva mediante (npx tsc --showConfig) y recomendación de activar (strict).
+- Decisión: se aceptó la recomendación y se verificó la configuración resultante.
+
+# Configuración de pruebas
+
+Al ejecutar las pruebas se presentó un error relacionado con la definición de (rootDir) en (projects/ui-lib/tsconfig.spec.json).
+
+Solución: se agregó la propiedad ("rootDir": "./src/lib") a la configuración de pruebas, siguiendo la indicación del error de TypeScript.
+
+Posteriormente, las pruebas se ejecutaron correctamente.
+
+# Uso de IA:
+- Solicitud: ayuda para interpretar el error de TypeScript y comprender cómo corregir la configuración.
+- Aporte recibido: explicación del propósito de (rootDir) y orientación para aplicar el ajuste.
+- Decisión: se adoptó el ajuste y se verificó mediante la ejecución de las pruebas.
+
+# 2. Creación de la biblioteca ui-lib
+
+Haciendo uso de Git bash se ejecutó el comando (ng generate library ui-lib --prefix=ui) para la creación de la biblioteca mediante Angular CLI.
+
+# Convención de selectores
+
+Durante la generación del primer componente se identificó que utilizar simultáneamente el nombre (ui-button) y el prefijo (ui) producía el selector (ui-ui-button).
+
+Solución: se corrigió el selector a (ui-button) y se estableció como convención generar los siguientes componentes utilizando nombres sin el prefijo, conservando (ui) como prefijo del proyecto.
+
+# 3. Implementación del componente ui-button
+
+# Dificultades y soluciones
+
+- Dificultad: definir cómo evitar que el evento de clic se emita cuando el botón está deshabilitado o cargando.
+  Solución: se implementó una condición de protección en el método ( handleClick() ) y se vinculó el atributo (disabled) del elemento HTML a ambos estados.
+
+- Dificultad: representar las variantes y tamaños sin duplicar componentes.
+  Solución: se utilizaron clases CSS dinámicas según los valores de los inputs.
+
+# Uso de inteligencia artificial
+
+Solicitudes realizadas:
+- Orientación para definir la API del componente.
+- Explicación e implementación de Signals y tipos unión.
+- Ayuda para construir la estructura HTML y los estilos CSS.
+- Orientación para diseñar pruebas unitarias de los diferentes estados y eventos.
+- Explicación de los comandos y de los resultados de las validaciones.
+
+Aportes aceptados: propuestas de implementación, organización del código, documentación JSDoc y pruebas unitarias.
+
+Criterios aplicados: se revisaron las propuestas y se realizaron los cambios en el proyecto con acompañamiento y explicación. Se buscó comprender la responsabilidad de cada propiedad, método y prueba antes de continuar.
+
+# 4. Configuración de Tailwind CSS v3
+
+Se instaló (tailwindcss@3.4.179) para cumplir con la restricción de usar Tailwind CSS v3 y no v4.
+
+# Uso de IA
+- Solicitud: verificar la instalación de Tailwind CSS v3 y configurar el escaneo de plantillas en el workspace.
+- Qué se aceptó y por qué: la instalación explícita de (tailwindcss@3) y la configuración de (content) hacia  ( ./projects/**/*.{html,ts} ) para cubrir tanto (ui-lib) como (demo-app).
+- Qué se modificó o rechazó: se ajustaron rutas y nombres de estilos cuando hubo desalineaciones entre archivos (como la ruta de estilos del componente y el nombre de la clase del spinner) y se limpió código de prueba innecesario.
+
+# 5. Creación y base limpia de demo-app
+
+Se generó la aplicación (demo-app) dentro de (projects/demo-app) con prefijo (app) para consumir (ui-lib) 
+
+# Uso de IA
+- Solicitud: limpiar el código de prueba de (demo-app) y dejar una base ordenada con temática de Rick & Morty.
+- Qué se aceptó y por qué: la estructura base limpia en (app.ts) y (app.html) con (OnPush) y signals, manteniendo el enfoque modular y sin lógica de prueba residual.
+- Qué se modificó o rechazó: se retiró el bloque de prueba de interacción para no mezclar demostraciones temporales con el flujo principal del reto.
