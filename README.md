@@ -171,3 +171,9 @@ ng test demo-app --watch=false
 ## Despliegue en GitHub Pages
 
 Cada `push` a `main` ejecuta el workflow `.github/workflows/deploy.yml`: compila primero `ui-lib` (`npx ng build ui-lib`), luego `demo-app` con `--base-href /instaleap-reto/` y publica `dist/demo-app/browser` en GitHub Pages.
+
+### Confirmación de eliminación con detalle completo
+
+- **Ficha completa antes de eliminar:** El modal de confirmación de borrado muestra el mismo detalle del registro que el modal de consulta (imagen y atributos de personaje, código/emisión/personajes de episodio, o tipo/dimensión/residentes de ubicación) para revisar con claridad qué elemento se va a quitar de la vista actual.
+- **Plantilla reutilizable (`NgTemplateOutlet`):** La vista de detalle se define en un `<ng-template #itemDetailContent let-item>` y se renderiza tanto en el modal de detalle como en el de confirmación evitando duplicar marcado HTML.
+
