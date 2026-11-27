@@ -44,7 +44,7 @@ const COLUMNS_BY_RESOURCE: Record<ResourceType, TableColumn[]> = {
 
 /**
  * Servicio central del Explorer de Recursos.
- * Gestiona estado reactivo con Signals y realiza las peticiones a Rick and Morty API.
+ * Gestiona estado reactivo con Signals y realiza las peticiones paginadas a Rick and Morty API.
  */
 @Injectable({ providedIn: 'root' })
 export class RickAndMortyExplorerService {
@@ -53,10 +53,16 @@ export class RickAndMortyExplorerService {
   readonly selectedResource = signal<ResourceType>('characters');
   readonly selectedStatus = signal<string | null>(null);
   readonly items = signal<ExplorerItem[]>([]);
+  readonly totalCount = signal<number>(0);
+  readonly totalPages = signal<number>(0);
+  readonly currentPage = signal<number>(1);
   readonly loading = signal<boolean>(false);
   readonly errorMessage = signal<string | null>(null);
   readonly selectedItem = signal<ExplorerItem | null>(null);
   readonly pendingDeleteItem = signal<ExplorerItem | null>(null);
+
+  private readonly nextPageUrl = signal<string | null>(null);
+  private readonly prevPageUrl = signal<string | null>(null);
 
   readonly activeColumns = computed<TableColumn[]>(
     () => COLUMNS_BY_RESOURCE[this.selectedResource()]
@@ -66,13 +72,17 @@ export class RickAndMortyExplorerService {
     () => this.selectedResource() === 'characters'
   );
 
+  readonly hasNextPage = computed<boolean>(() => this.nextPageUrl() !== null);
+
+  readonly hasPrevPage = computed<boolean>(() => this.prevPageUrl() !== null);
+
   constructor() {
-    this.fetchCurrentResource();
+    this.fetchCurrentResource(1);
   }
 
   /**
-   * Cambia el recurso dimensional activo, reinicia filtros y modales pendientes,
-   * y solicita los registros correspondientes a la API.
+   * Cambia el recurso dimensional activo, reinicia filtros, paginación y modales pendientes,
+   * y solicita la página 1 correspondiente a la API.
    * @param resource Recurso a consultar (characters, episodes o locations).
    */
   selectResource(resource: ResourceType): void {
@@ -80,11 +90,17 @@ export class RickAndMortyExplorerService {
     this.selectedStatus.set(null);
     this.selectedItem.set(null);
     this.pendingDeleteItem.set(null);
-    this.fetchCurrentResource();
+    this.currentPage.set(1);
+    this.totalCount.set(0);
+    this.totalPages.set(0);
+    this.nextPageUrl.set(null);
+    this.prevPageUrl.set(null);
+    this.fetchCurrentResource(1);
   }
 
   /**
-   * Aplica o limpia el filtro de estado (status) cuando el recurso activo es (characters).
+   * Aplica o limpia el filtro de estado (status) cuando el recurso activo es (characters)
+   * y vuelve a la página 1.
    * @param status Estado seleccionado (Alive, Dead, unknown) o (null) para limpiar el filtro.
    */
   selectStatus(status: string | null): void {
@@ -92,7 +108,38 @@ export class RickAndMortyExplorerService {
       return;
     }
     this.selectedStatus.set(status);
-    this.fetchCurrentResource();
+    this.currentPage.set(1);
+    this.totalCount.set(0);
+    this.totalPages.set(0);
+    this.nextPageUrl.set(null);
+    this.prevPageUrl.set(null);
+    this.fetchCurrentResource(1);
+  }
+
+  /**
+   * Avanza a la página siguiente (siguiente bloque de hasta 20 registros).
+   */
+  nextPage(): void {
+    const url = this.nextPageUrl();
+    if (!url || this.loading()) {
+      return;
+    }
+
+    const targetPage = this.extractPageFromUrl(url, this.currentPage() + 1);
+    this.fetchFromUrl(url, undefined, targetPage);
+  }
+
+  /**
+   * Retrocede a la página anterior (bloque anterior de hasta 20 registros).
+   */
+  prevPage(): void {
+    const url = this.prevPageUrl();
+    if (!url || this.loading()) {
+      return;
+    }
+
+    const targetPage = this.extractPageFromUrl(url, Math.max(1, this.currentPage() - 1));
+    this.fetchFromUrl(url, undefined, targetPage);
   }
 
   /**
@@ -172,22 +219,36 @@ export class RickAndMortyExplorerService {
     return this.selectedResource() === 'locations' && 'dimension' in item;
   }
 
-  private fetchCurrentResource(): void {
+  private extractPageFromUrl(url: string, fallback: number): number {
+    try {
+      const parsed = new URL(url);
+      const pageParam = Number(parsed.searchParams.get('page'));
+      return Number.isInteger(pageParam) && pageParam > 0 ? pageParam : fallback;
+    } catch {
+      return fallback;
+    }
+  }
+
+  private fetchCurrentResource(page: number): void {
     const resource = this.selectedResource();
     const endpoint = ENDPOINT_BY_RESOURCE[resource];
     const url = `${API_BASE_URL}/${endpoint}`;
 
-    let params = new HttpParams();
+    let params = new HttpParams().set('page', String(page));
     const status = this.selectedStatus();
     if (resource === 'characters' && status) {
       params = params.set('status', status);
     }
 
+    this.fetchFromUrl(url, params, page);
+  }
+
+  private fetchFromUrl(url: string, params: HttpParams | undefined, targetPage: number): void {
     this.loading.set(true);
     this.errorMessage.set(null);
 
     this.http
-      .get<ApiPaginatedResponse<ExplorerItem>>(url, { params })
+      .get<ApiPaginatedResponse<ExplorerItem>>(url, params ? { params } : {})
       .pipe(
         catchError((err: unknown) => {
           const statusCode =
@@ -195,11 +256,15 @@ export class RickAndMortyExplorerService {
               ? Number((err as { status?: unknown }).status)
               : 0;
 
+          this.items.set([]);
+          this.totalCount.set(0);
+          this.totalPages.set(0);
+          this.nextPageUrl.set(null);
+          this.prevPageUrl.set(null);
+
           if (statusCode === 404) {
-            this.items.set([]);
             this.errorMessage.set(null);
           } else {
-            this.items.set([]);
             this.errorMessage.set(
               'No fue posible obtener los datos desde Rick and Morty API. Verifica tu conexión e inténtalo de nuevo.'
             );
@@ -213,9 +278,13 @@ export class RickAndMortyExplorerService {
       )
       .subscribe((response) => {
         if (response) {
+          this.currentPage.set(targetPage);
+          this.totalCount.set(response.info.count);
+          this.totalPages.set(response.info.pages);
+          this.nextPageUrl.set(response.info.next);
+          this.prevPageUrl.set(response.info.prev);
           this.items.set(response.results);
         }
       });
   }
 }
-

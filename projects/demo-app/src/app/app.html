@@ -21,12 +21,16 @@
             Explora personajes, episodios y dimensiones con filtros reactivos, tabla genérica y vista detallada en tarjeta.
           </p>
         </div>
-
         <div
           class="inline-flex items-center gap-2 self-start rounded-full border border-cyan-400/30 bg-cyan-950/40 px-3.5 py-1.5 font-mono text-xs text-cyan-300"
         >
           <span class="h-2 w-2 rounded-full bg-[#97ce4c] shadow-[0_0_8px_#97ce4c]"></span>
-          <span>{{ explorer.items().length }} registros</span>
+          <span>
+            {{ explorer.totalCount() }} registros
+            @if (explorer.totalPages() > 0) {
+              · Pág. {{ explorer.currentPage() }}/{{ explorer.totalPages() }}
+            }
+          </span>
         </div>
       </div>
     </header>
@@ -67,6 +71,30 @@
           (actionTriggered)="onTableAction($event)"
         />
       </div>
+
+      @if ((explorer.hasPrevPage() || explorer.hasNextPage()) && !explorer.errorMessage()) {
+        <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-800/80 bg-[#0b1322]/70 px-4 py-2.5">
+          <span class="font-mono text-xs text-slate-400">
+            Mostrando {{ explorer.items().length }} en pág. {{ explorer.currentPage() }} de {{ explorer.totalPages() }}
+          </span>
+          <div class="flex items-center gap-2">
+            <ui-button
+              label="Anterior"
+              variant="secondary"
+              size="sm"
+              [disabled]="!explorer.hasPrevPage() || explorer.loading()"
+              (clicked)="onPrevPage()"
+            />
+            <ui-button
+              label="Siguiente"
+              variant="secondary"
+              size="sm"
+              [disabled]="!explorer.hasNextPage() || explorer.loading()"
+              (clicked)="onNextPage()"
+            />
+          </div>
+        </div>
+      }
 
       <div
         class="flex flex-col justify-between gap-2 rounded-xl border border-slate-800/80 bg-[#09101c] px-4 py-2.5 text-xs text-slate-400 sm:flex-row sm:items-center"
@@ -214,4 +242,3 @@
     </div>
   }
 </main>
-

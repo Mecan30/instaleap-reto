@@ -38,7 +38,7 @@ export class App {
   ];
 
   protected readonly lastEventLog = signal<string>(
-    'Portal listo — selecciona un recurso o acción en la tabla.'
+    'Portal listo - selecciona un recurso o acción en la tabla.'
   );
 
   /**
@@ -59,6 +59,24 @@ export class App {
     this.lastEventLog.set(
       option.value ? `Filtro de estado aplicado: "${option.label}".` : 'Filtro de estado limpiado.'
     );
+  }
+
+  /**
+   * Retrocede a la página anterior de registros y actualiza la bitácora.
+   */
+  protected onPrevPage(): void {
+    const target = Math.max(1, this.explorer.currentPage() - 1);
+    this.explorer.prevPage();
+    this.lastEventLog.set(`Navegando a la página ${target}.`);
+  }
+
+  /**
+   * Avanza a la página siguiente de registros y actualiza la bitácora.
+   */
+  protected onNextPage(): void {
+    const target = this.explorer.currentPage() + 1;
+    this.explorer.nextPage();
+    this.lastEventLog.set(`Navegando a la página ${target}.`);
   }
 
   /**
@@ -99,4 +117,3 @@ export class App {
     }
   }
 }
-
