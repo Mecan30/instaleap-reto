@@ -1,4 +1,3 @@
-
 <main
   class="min-h-screen bg-[#070b14] text-slate-100 px-4 py-8 selection:bg-[#97ce4c]/30 selection:text-[#97ce4c]"
 >
@@ -112,7 +111,84 @@
     </section>
   </div>
 
-  <!-- Modal de detalle con <ui-card> y proyección vía ng-content -->
+  <!-- Plantilla reutilizable con la información detallada según el tipo de registro -->
+  <ng-template #itemDetailContent let-item>
+    @if (explorer.isCharacter(item)) {
+      <div class="space-y-3 text-sm text-slate-200">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+          <img
+            [src]="item.image"
+            [alt]="item.name"
+            class="h-24 w-24 rounded-xl border-2 border-[#97ce4c]/50 object-cover shadow-[0_0_16px_rgba(151,206,76,0.2)]"
+          />
+          <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
+            <div>
+              <dt class="font-mono uppercase text-slate-400">Estado</dt>
+              <dd class="font-semibold text-[#97ce4c]">{{ item.status }}</dd>
+            </div>
+            <div>
+              <dt class="font-mono uppercase text-slate-400">Especie</dt>
+              <dd class="font-medium text-white">{{ item.species }}</dd>
+            </div>
+            <div>
+              <dt class="font-mono uppercase text-slate-400">Género</dt>
+              <dd class="font-medium text-white">{{ item.gender }}</dd>
+            </div>
+            <div>
+              <dt class="font-mono uppercase text-slate-400">Tipo</dt>
+              <dd class="font-medium text-cyan-300">{{ item.type || 'Estándar' }}</dd>
+            </div>
+          </dl>
+        </div>
+        <dl class="space-y-1.5 border-t border-slate-800 pt-3 text-xs">
+          <div>
+            <span class="font-mono text-slate-400">Origen:</span>
+            <span class="ml-1 text-slate-100">{{ item.origin.name }}</span>
+          </div>
+          <div>
+            <span class="font-mono text-slate-400">Ubicación actual:</span>
+            <span class="ml-1 text-slate-100">{{ item.location.name }}</span>
+          </div>
+          <div>
+            <span class="font-mono text-slate-400">Episodios:</span>
+            <span class="ml-1 font-mono text-cyan-300">{{ item.episode.length }}</span>
+          </div>
+        </dl>
+      </div>
+    } @else if (explorer.isEpisode(item)) {
+      <dl class="space-y-2 text-xs text-slate-200">
+        <div>
+          <span class="font-mono text-slate-400">Código:</span>
+          <span class="ml-1 font-mono font-semibold text-[#97ce4c]">{{ item.episode }}</span>
+        </div>
+        <div>
+          <span class="font-mono text-slate-400">Fecha de emisión:</span>
+          <span class="ml-1 text-white">{{ item.air_date }}</span>
+        </div>
+        <div>
+          <span class="font-mono text-slate-400">Personajes en el episodio:</span>
+          <span class="ml-1 font-mono text-cyan-300">{{ item.characters.length }}</span>
+        </div>
+      </dl>
+    } @else if (explorer.isLocation(item)) {
+      <dl class="space-y-2 text-xs text-slate-200">
+        <div>
+          <span class="font-mono text-slate-400">Tipo:</span>
+          <span class="ml-1 font-semibold text-[#97ce4c]">{{ item.type }}</span>
+        </div>
+        <div>
+          <span class="font-mono text-slate-400">Dimensión:</span>
+          <span class="ml-1 font-mono text-cyan-300">{{ item.dimension }}</span>
+        </div>
+        <div>
+          <span class="font-mono text-slate-400">Residentes registrados:</span>
+          <span class="ml-1 font-mono text-white">{{ item.residents.length }}</span>
+        </div>
+      </dl>
+    }
+  </ng-template>
+
+  <!-- Modal de detalle con <ui-card> -->
   @if (explorer.selectedItem(); as item) {
     <div
       class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 p-4 backdrop-blur-sm"
@@ -121,81 +197,9 @@
     >
       <div class="w-full max-w-xl">
         <ui-card [title]="item.name" [subtitle]="'ID #' + item.id">
-          @if (explorer.isCharacter(item)) {
-            <div class="space-y-3 text-sm text-slate-200">
-              <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
-                <img
-                  [src]="item.image"
-                  [alt]="item.name"
-                  class="h-24 w-24 rounded-xl border-2 border-[#97ce4c]/50 object-cover shadow-[0_0_16px_rgba(151,206,76,0.2)]"
-                />
-                <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
-                  <div>
-                    <dt class="font-mono uppercase text-slate-400">Estado</dt>
-                    <dd class="font-semibold text-[#97ce4c]">{{ item.status }}</dd>
-                  </div>
-                  <div>
-                    <dt class="font-mono uppercase text-slate-400">Especie</dt>
-                    <dd class="font-medium text-white">{{ item.species }}</dd>
-                  </div>
-                  <div>
-                    <dt class="font-mono uppercase text-slate-400">Género</dt>
-                    <dd class="font-medium text-white">{{ item.gender }}</dd>
-                  </div>
-                  <div>
-                    <dt class="font-mono uppercase text-slate-400">Tipo</dt>
-                    <dd class="font-medium text-cyan-300">{{ item.type || 'Estándar' }}</dd>
-                  </div>
-                </dl>
-              </div>
-              <dl class="space-y-1.5 border-t border-slate-800 pt-3 text-xs">
-                <div>
-                  <span class="font-mono text-slate-400">Origen:</span>
-                  <span class="ml-1 text-slate-100">{{ item.origin.name }}</span>
-                </div>
-                <div>
-                  <span class="font-mono text-slate-400">Ubicación actual:</span>
-                  <span class="ml-1 text-slate-100">{{ item.location.name }}</span>
-                </div>
-                <div>
-                  <span class="font-mono text-slate-400">Episodios:</span>
-                  <span class="ml-1 font-mono text-cyan-300">{{ item.episode.length }}</span>
-                </div>
-              </dl>
-            </div>
-          } @else if (explorer.isEpisode(item)) {
-            <dl class="space-y-2 text-xs text-slate-200">
-              <div>
-                <span class="font-mono text-slate-400">Código:</span>
-                <span class="ml-1 font-mono font-semibold text-[#97ce4c]">{{ item.episode }}</span>
-              </div>
-              <div>
-                <span class="font-mono text-slate-400">Fecha de emisión:</span>
-                <span class="ml-1 text-white">{{ item.air_date }}</span>
-              </div>
-              <div>
-                <span class="font-mono text-slate-400">Personajes en el episodio:</span>
-                <span class="ml-1 font-mono text-cyan-300">{{ item.characters.length }}</span>
-              </div>
-            </dl>
-          } @else if (explorer.isLocation(item)) {
-            <dl class="space-y-2 text-xs text-slate-200">
-              <div>
-                <span class="font-mono text-slate-400">Tipo:</span>
-                <span class="ml-1 font-semibold text-[#97ce4c]">{{ item.type }}</span>
-              </div>
-              <div>
-                <span class="font-mono text-slate-400">Dimensión:</span>
-                <span class="ml-1 font-mono text-cyan-300">{{ item.dimension }}</span>
-              </div>
-              <div>
-                <span class="font-mono text-slate-400">Residentes registrados:</span>
-                <span class="ml-1 font-mono text-white">{{ item.residents.length }}</span>
-              </div>
-            </dl>
-          }
+          <ng-container *ngTemplateOutlet="itemDetailContent; context: { $implicit: item }" />
 
-          <div class="flex justify-end pt-4">
+          <div card-footer class="flex justify-end pt-4">
             <ui-button
               label="Cerrar"
               variant="secondary"
@@ -207,25 +211,29 @@
     </div>
   }
 
-  <!-- Modal de confirmación al eliminar con <ui-card> y <ui-button> -->
+  <!-- Modal de confirmación al eliminar con <ui-card>, detalle del registro y <ui-button> -->
   @if (explorer.pendingDeleteItem(); as target) {
     <div
       class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 p-4 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
     >
-      <div class="w-full max-w-md">
+      <div class="w-full max-w-xl">
         <ui-card
-          title="Confirmar eliminación"
+          [title]="'Confirmar eliminación · ' + target.name"
           [subtitle]="'ID #' + target.id"
         >
-          <p class="text-sm text-slate-200">
-            ¿Estás seguro de que deseas eliminar
-            <span class="font-semibold text-[#97ce4c]">"{{ target.name }}"</span>
-            de la lista actual?
-          </p>
+          <div class="space-y-4">
+            <p class="text-sm text-slate-200">
+              ¿Estás seguro de que deseas eliminar este registro de la lista actual?
+            </p>
 
-          <div class="flex items-center justify-end gap-3 pt-4">
+            <div class="rounded-xl border border-slate-800/90 bg-[#070b14]/80 p-3.5">
+              <ng-container *ngTemplateOutlet="itemDetailContent; context: { $implicit: target }" />
+            </div>
+          </div>
+
+          <div card-footer class="flex items-center justify-end gap-3 pt-4">
             <ui-button
               label="Cancelar"
               variant="secondary"
