@@ -173,3 +173,11 @@ output()	 |   actionTriggered   |	TableAction         | Emite { action: 'view'-'
 
 - Automatización con GitHub Actions: Cada (push) a la rama (main) ejecuta el workflow en (.github/workflows/deploy.yml), compilando primero (ui-lib) (npx ng build ui-lib) y luego (demo-app) con (--base-href /instaleap-reto/) antes de publicar el artefacto resultante (dist/demo-app/browser) en GitHub Pages.
 
+# Paginación y contador general
+
+- Bloques de hasta 20 registros: La tabla muestra el lote correspondiente a la página activa devuelta por la API de Rick and Morty (hasta 20 elementos por página).
+
+- Navegación hacia adelante y atrás: Los controles Anterior y Siguiente consultan (info.prev/info.next) (con parámetro (page)), deshabilitándose automáticamente cuando no existe página previa o siguiente o mientras hay una petición en curso, y reiniciando a la página 1 al cambiar de recurso o filtro de estado.
+
+- Contador general conservado: El indicador superior muestra el total general de registros (totalCount) de (info.count) para el recurso y filtro activos junto con la página actual y el total de páginas (Pág. X/Y).
+

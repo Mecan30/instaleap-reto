@@ -236,3 +236,25 @@ Se importó (UiButton) en (demo-app) desde el paquete público (ui-lib) y se mon
 
 - Ubicación inicial del archivo de workflow: Al crear (deploy.yml) inicialmente quedó en (.github/deploy.yml) en lugar de dentro de (.github/workflows/), lo que impidió referenciar (.github/workflows/deploy.yml) al preparar el commit. Mover el archivo a (.github/workflows/deploy.yml) permitió registrarlo, hacer el commit y ejecutar el workflow en verde en GitHub Actions.
 
+# 13. Paginación por Páginas (Anterior / Siguiente) Preservando el Contador General
+
+# Decisiones tomadas
+
+- Paginación por página en lugar de carga acumulativa: Se reemplazó la acumulación progresiva de filas por una navegación paginada con botones Anterior y Siguiente respaldada por (info.count), (info.pages), (info.next) y (info.prev) de la API, manteniendo como máximo 20 registros visibles por página en la tabla.
+
+- Preservación del contador general y reinicio al filtrar: (totalCount) conserva el total real de registros reportado por la API para la consulta activa mostrándose en el encabezado junto con (currentPage) y (totalPages), mientras que cambiar de recurso (selectResource) o de filtro de estado (`selectStatus`) restablece la paginación a la página 1.
+
+# Uso de IA
+
+# Ajuste de paginación en servicio, componente y plantilla (rick-and-morty-explorer.service.ts, app.ts, app.html)
+
+- El prompt utilizado: Solicitud para cambiar la carga acumulativa de elementos por una paginación donde se muestren hasta 20 elementos por página, con navegación hacia adelante y hacia atrás y manteniendo el contador general.
+
+- Qué se aceptó y por qué: Se adoptó el manejo de (currentPage, totalPages, totalCount, hasPrevPage y hasNextPage) mediante Signals/computed en (RickAndMortyExplorerService), junto con (<ui-button>) para Anterior y Siguiente en (app.html) y manejadores en (App), aprovechando la paginación nativa de la API y los componentes ya existentes de (ui-lib).
+
+- Qué se rechazó o modificó: Se descartó mantener la acumulación continua de registros en (items) al avanzar de página, priorizando una vista acotada por página de hasta 20 filas con retroceso y avance explícitos.
+
+# Retos y Soluciones
+
+- Sincronización del número de página al usar URLs (next/prev): Como la API entrega las URLs completas de la página siguiente y anterior en (info.next) e (info.prev), se añadió una extracción segura del parámetro (page) desde la URL (con respaldo calculado a partir de (currentPage)) para mantener (currentPage()) alineado con lo que muestra la tabla.
+
