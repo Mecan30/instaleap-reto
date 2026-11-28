@@ -21,7 +21,6 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
  */
 @Component({
   selector: 'ui-button',
-  standalone: true,
   imports: [],
   templateUrl: './ui-button.html',
   styleUrl: './ui-button.css',
