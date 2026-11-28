@@ -153,6 +153,14 @@
             <span class="font-mono text-slate-400">Episodios:</span>
             <span class="ml-1 font-mono text-cyan-300">{{ item.episode.length }}</span>
           </div>
+          <div>
+            <span class="font-mono text-slate-400">Creado:</span>
+            <span class="ml-1 font-mono text-slate-100">{{ item.created | date: 'yyyy-MM-dd' }}</span>
+          </div>
+          <div>
+            <span class="font-mono text-slate-400">URL:</span>
+            <span class="ml-1 break-all font-mono text-slate-100">{{ item.url }}</span>
+          </div>
         </dl>
       </div>
     } @else if (explorer.isEpisode(item)) {
@@ -169,6 +177,14 @@
           <span class="font-mono text-slate-400">Personajes en el episodio:</span>
           <span class="ml-1 font-mono text-cyan-300">{{ item.characters.length }}</span>
         </div>
+        <div>
+          <span class="font-mono text-slate-400">Creado:</span>
+          <span class="ml-1 font-mono text-slate-100">{{ item.created | date: 'yyyy-MM-dd' }}</span>
+        </div>
+        <div>
+          <span class="font-mono text-slate-400">URL:</span>
+          <span class="ml-1 break-all font-mono text-slate-100">{{ item.url }}</span>
+        </div>
       </dl>
     } @else if (explorer.isLocation(item)) {
       <dl class="space-y-2 text-xs text-slate-200">
@@ -183,6 +199,14 @@
         <div>
           <span class="font-mono text-slate-400">Residentes registrados:</span>
           <span class="ml-1 font-mono text-white">{{ item.residents.length }}</span>
+        </div>
+        <div>
+          <span class="font-mono text-slate-400">Creado:</span>
+          <span class="ml-1 font-mono text-slate-100">{{ item.created | date: 'yyyy-MM-dd' }}</span>
+        </div>
+        <div>
+          <span class="font-mono text-slate-400">URL:</span>
+          <span class="ml-1 break-all font-mono text-slate-100">{{ item.url }}</span>
         </div>
       </dl>
     }

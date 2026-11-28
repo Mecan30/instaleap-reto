@@ -10,7 +10,7 @@ import {
 } from 'ui-lib';
 import { ExplorerItem, ResourceType } from './models/rick-and-morty.models';
 import { RickAndMortyExplorerService } from './services/rick-and-morty-explorer.service';
-import { NgTemplateOutlet } from '@angular/common';
+import { DatePipe, NgTemplateOutlet } from '@angular/common';
 
 /**
  * Componente raíz de la aplicación demo.
@@ -18,7 +18,7 @@ import { NgTemplateOutlet } from '@angular/common';
  */
 @Component({
   selector: 'app-root',
-  imports: [UiButton, UiCard, UiSelect, UiTable, NgTemplateOutlet],
+  imports: [UiButton, UiCard, UiSelect, UiTable, NgTemplateOutlet, DatePipe],
   templateUrl: './app.html',
   styleUrl: './app.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
