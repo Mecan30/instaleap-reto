@@ -254,7 +254,7 @@ Se importó `UiButton` en `demo-app` desde el paquete público `ui-lib` y se mon
 
 - **Sincronización del número de página al usar URLs `next/prev`:** Como la API entrega las URLs completas de la página siguiente y anterior en `info.next` e `info.prev`, se añadió una extracción segura del parámetro `page` desde la URL (con respaldo calculado a partir de `currentPage`) para mantener `currentPage()` alineado con lo que muestra la tabla.
 
-## 14. Revisión final con IA
+## 14. Revisión con IA
 
 ### Uso de IA
 
@@ -264,9 +264,10 @@ Se importó `UiButton` en `demo-app` desde el paquete público `ui-lib` y se mon
 
 - **Qué se rechazó o modificó:** no se implementó la limpieza del filtro de status ni el cierre de los modales con Escape, porque exceden lo pedido en la prueba y tocarían la librería y sus pruebas cerca del plazo.
 
-## Detalle Completo en Modal de Confirmación de Eliminación
+## 15. Detalle Completo en Modal de Confirmación de Eliminación
 
 ### Decisiones tomadas
+
 - **Mostrar el detalle completo del registro antes de confirmar el borrado:** Al solicitar eliminar un elemento de la tabla, el modal de confirmación presenta la misma información detallada que la vista de consulta (según sea personaje, episodio o ubicación) para dar contexto claro antes de confirmar o cancelar.
 
 - **Reutilización de plantilla con `NgTemplateOutlet`:** Se extrajo el bloque condicional de detalle (`isCharacter`, `isEpisode`, `isLocation`) a un `<ng-template #itemDetailContent let-item>` en `app.html` y se importó `NgTemplateOutlet` en `app.ts`, reutilizándolo en ambos modales en lugar de duplicar el código en la plantilla.
@@ -280,3 +281,14 @@ Se importó `UiButton` en `demo-app` desde el paquete público `ui-lib` y se mon
 - **Qué se aceptó y por qué:** Se centralizó el renderizado del detalle en un `<ng-template>` instanciado mediante `*ngTemplateOutlet` con `context: { $implicit: ... }` tanto en el modal de detalle como en el de confirmación de eliminación, manteniendo los botones de acción (`Cancelar` / `Sí, eliminar`) en el pie de confirmación.
 
 - **Qué se rechazó o modificó:** Se evitó duplicar todo el bloque `@if / @else if` de personajes, episodios y ubicaciones dentro del modal de eliminación para mantener una sola fuente de verdad en la plantilla.
+
+## 16. Campos completos en el detalle
+
+### Uso de IA
+
+- **El prompt utilizado:** consulté si el modal de detalle cumplía con "mostrar todos los campos del registro" que pide el enunciado.
+
+- **Qué se aceptó y por qué:** añadir `created` (con `DatePipe`) y `url` a la plantilla `itemDetailContent`, porque eran los campos del registro que faltaban y esa plantilla los muestra tanto en el detalle como en la confirmación de eliminar.
+
+- **Qué se rechazó o modificó:** no se eliminaron `created` y `url` de los modelos, porque las interfaces deben reflejar lo que devuelve la API; las listas de URLs (episodios, personajes, residentes) se siguen resumiendo con su cantidad.
+
